@@ -1,0 +1,17 @@
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+#TODO: Add 'check' as fs_mgr_flags with data partition.
+# Currently we dont have e2fsck compiled. So fs check would failed.
+
+#<src>                                                     <mnt_point>        <type>  <mnt_flags and options>                                     <fs_mgr_flags>
+/dev/block/platform/soc/7824900.sdhci/by-name/userdata     /data              ext4    noatime,nosuid,nodev,barrier=1,noauto_da_alloc,discard      
+latemount,wait,check,encryptable=footer,quota,formattable
+/dev/block/platform/soc/7824900.sdhci/by-name/cache        /cache             ext4    noatime,nosuid,nodev,barrier=1                              wait,check
+/dev/block/platform/soc/7824900.sdhci/by-name/persist      /persist           ext4    noatime,nosuid,nodev,barrier=1                              wait
+/devices/platform/msm_hsusb                                /storage/usbotg    vfat    nosuid,nodev                                                wait,voldmanaged=usbotg:auto
+/dev/block/platform/soc/7824900.sdhci/by-name/misc         /misc              emmc    defaults                                                    defaults
+/dev/block/platform/soc/7824900.sdhci/by-name/modem        /firmware          vfat    ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337    wait
+/dev/block/platform/soc/7824900.sdhci/by-name/oem          /oem               ext4    ro,context=u:object_r:oemfs:s0,nosuid,nodev                 wait
+/dev/block/zram0                                           none               swap    defaults                                                    zramsize=268435456,swapprio=32758
